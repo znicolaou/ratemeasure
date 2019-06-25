@@ -239,6 +239,18 @@ if (outflag == 1):
     f=open('%sspecies.dat'%(filebase),'w')
     print(*(gas.species_names), sep=' ', file=f)
     f.close()
+    f=open('%sreactants.dat'%(filebase),'w')
+    for reaction in gas.reactions():
+        for spec in reaction.reactants.keys():
+            print(spec,reaction.reactants[spec], file=f, end=' ')
+        print('', file=f)
+    f.close()
+    f=open('%sproducts.dat'%(filebase),'w')
+    for reaction in gas.reactions():
+        for spec in reaction.products.keys():
+            print(spec,reaction.products[spec], file=f, end=' ')
+        print('', file=f)
+    f.close()
     for n in range(0,nmeasure):
         np.save("%stimes_%i.npy"%(filebase,n),observations[n].t)
         np.save("%stemperatures_%i.npy"%(filebase,n),observations[n].T)
