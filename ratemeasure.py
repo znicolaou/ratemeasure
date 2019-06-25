@@ -307,7 +307,7 @@ if(result.success):
         print(measure_ind, reactions[measure_ind])
         for n in range(0,nmeasure):
             states = runsim_nosense ( tmaxes[n], temperatures[n], pressures[n], initials[n] )
-            np.save("%s_fit_%i.npy"%(filebase,n),states.X)
+            np.save("%sfit_%i.npy"%(filebase,n),states.X)
 
 else:
     f=open('%snorms.dat'%filebase,'w')
