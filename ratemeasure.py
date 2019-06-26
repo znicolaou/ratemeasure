@@ -7,7 +7,7 @@ import timeit
 import os
 import scipy.optimize as op
 import argparse
-def runsim ( tmax, temp, pres, ics ):
+def runsim ( tmax, temp, pres, ics, sensitivity ):
     dt = tmax/Npoints
     gas.TPX=temp,pres,ics
 
@@ -32,13 +32,14 @@ def runsim ( tmax, temp, pres, ics ):
 
         sensitivities=[]
         for i in range(0,nr):
-            sensitivities.append(sim.sensitivity('O', i))
+            sensitivities.append(sim.sensitivity(sensitivity, i))
         states.append(r.thermo.state, t=t, sens=sensitivities)
     return states
 
 def runsim_nosense ( tmax, temp, pres, ics ):
     dt = tmax/Npoints
     gas.TPX=temp,pres,ics
+
     r = ct.IdealGasReactor(gas, name='R1')
     sim = ct.ReactorNet([r])
 
@@ -102,7 +103,7 @@ def residual ( eta, k0, observations, measure_ind, tmaxes, temperatures, pressur
             ret+=((lst2[-1]/lst1[-1]-1)**2)/nmeasure
 
             if(outflag==1):
-                print(temperatures[i], tmaxes[i], pressures[i]/ct.one_atm, (1.0*ind2/ind1-1), (lst2[ind2]/lst1[ind1]-1))
+                print(temperatures[i], tmaxes[i], pressures[i]/ct.one_atm, (lst2[-1]/lst1[-1]-1))
                 sys.stdout.flush()
 
 
@@ -151,6 +152,7 @@ parser.add_argument("--mechanism", type=str, required=False, default='mechanisms
 parser.add_argument("--Npoints", type=float, required=False, default=5e3, dest='Npoints', help='Number of time points to output')
 parser.add_argument("--experiments", type=str, required=False, default='experiments/air.dat', dest='experiments', help='File containing a line [tmax temperature pressure initials] for each experimental condition')
 parser.add_argument("--measure", type=int, required=False, default=37, dest='measure', help='the index of the reaction whose rate is measured')
+parser.add_argument("--sensitivity", type=int, required=False, default=2, dest='sensitivity', help='the index of the reaction whose rate is measured')
 parser.add_argument("--remove", type=int, required=False, default=40, dest='remove', help='The number of reactions to randomly remove')
 parser.add_argument("--retain", type=int, required=False, default=40, dest='retain')
 parser.add_argument("--seed", type=int, required=False, default=1, dest='seed', help='The random seed')
@@ -170,6 +172,7 @@ ns=gas.n_total_species
 nr=gas.n_reactions
 expfile = open(args.experiments, 'r')
 measure_ind = args.measure
+sensitivity = args.sensitivity
 num_remove = args.remove
 num_exclude = args.retain
 maxes=args.maxes
@@ -206,7 +209,7 @@ if (not (os.path.exists('%sms.dat'%filebase) and os.path.exists('%sms.dat'%fileb
     print("running with sensitivities")
     for i in range(0,nmeasure):
         print("\n",i)
-        observations.append(runsim(tmaxes[i], temperatures[i], pressures[i], initials[i]))
+        observations.append(runsim(tmaxes[i], temperatures[i], pressures[i], initials[i], gas.species_names[sensitivity]))
     sensitivities=[]
     for i in range(0,nmeasure):
         sensitivities.append(observations[i].sens)
