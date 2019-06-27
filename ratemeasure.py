@@ -208,8 +208,9 @@ observations=[]
 if (not (os.path.exists('%sms.dat'%filebase) and os.path.exists('%sms.dat'%filebase))) and (outflag==1):
     print("running with sensitivities")
     for i in range(0,nmeasure):
-        print("\n",i)
+        print(i)
         observations.append(runsim(tmaxes[i], temperatures[i], pressures[i], initials[i], gas.species_names[sensitivity]))
+        print('')
     sensitivities=[]
     for i in range(0,nmeasure):
         sensitivities.append(observations[i].sens)
@@ -219,7 +220,7 @@ if (not (os.path.exists('%sms.dat'%filebase) and os.path.exists('%sms.dat'%fileb
     np.savetxt('%sms.dat'%filebase,ms)
 
     for n in range(0,nmeasure):
-        np.save('%sobssens_%i.npy'%(filebase,n),np.array(observations[n].sens))
+        np.save('%ssensitivities_%i.npy'%(filebase,n),np.array(observations[n].sens))
 else:
     if (not (os.path.exists('%smi.dat'%filebase) and os.path.exists('%sms.dat'%filebase))):
         print("Data files missing; run with sensitivity!")
