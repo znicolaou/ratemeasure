@@ -62,5 +62,5 @@ To find the rate estimate for reaction 37 of the GRI mechanism removing 40 react
 
 To find the rate estimate for reaction 478 of the pyrolysis mechanism removing 200 reations, retaining 200 reactions, using H2 sensitivity, with no maxima and yields of H2 and CH4, run
 
-`./ratemeasure.py --mechanism mechanisms/gri30.cti --experiments experiments/pyrolysis.dat --yields 4 10 --maxes -1 --sensitivity 4 --filebase data/pyrolysis/ --retain 200 --remove 200 --measure 478`  
+`./ratemeasure.py --mechanism mechanisms/pyrolysis.cti --experiments experiments/pyrolysis.dat --yields 4 10 --maxes -1 --sensitivity 4 --filebase data/pyrolysis/ --retain 200 --remove 200 --measure 478`  
 
