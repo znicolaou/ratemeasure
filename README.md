@@ -52,9 +52,9 @@ optional arguments:
                         -1 for none. Default -1.
   ```
   
-After running once with sensitivities, the files filebasemi.dat and filebasems.dat are created to store sensitivity information.  If these files are present, the program runs without calculating sensitivities to speed up evaluation.  The species names, molar fractions, reaction rates, products, reactants, temperatures, and pressures are stores in files based on filebase.
+After running once with sensitivities, the files filebasemi.dat and filebasems.dat are created to store sensitivity information.  If these files are present, the program runs without calculating sensitivities to speed up evaluation.  The times, species names, molar fractions, reaction rates, products, reactants, temperatures, and pressures are stores in files based on filebase.
 
   -----------
 # Examples
 To find the rate estimate for the GRI mechanism removing 40 reactions and retaining 40 reactions, using [O] sensitivity and maxima and no yields, run
-`./ratemeasure.py --mechanism mechanisms/gri30.cti --experiments experiments/air.dat --yields -1 --maxes 2 --sensitivity 2 --filebase data/air/`  
+`./ratemeasure.py --mechanism mechanisms/gri30.cti --experiments experiments/air.dat --yields -1 --maxes 2 --sensitivity 2 --filebase data/air/ --retain 40 --remove 40 --measure 37`  
